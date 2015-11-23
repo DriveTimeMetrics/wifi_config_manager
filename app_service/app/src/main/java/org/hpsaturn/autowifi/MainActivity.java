@@ -29,9 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final boolean DEBUG = Config.DEBUG;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String SSID_NAME = "ConfigMeridianAP";
 
-    private WifiManager wifiManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,88 +38,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-        if (!isCurrentConnected()) buildDefaultHostpot();
-        else getNetworkStatusVars();
-
-        startConfigServer();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(onFabClickListener);
     }
 
-    private void startConfigServer() {
-
-        if(DEBUG)Log.d(TAG,"startConfigServer..");
-        AsyncHttpServer server = new AsyncHttpServer();
-
-        List<WebSocket> _sockets = new ArrayList<WebSocket>();
-
-        server.get("/", new HttpServerRequestCallback() {
-            @Override
-            public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
-                if(DEBUG)Log.d(TAG,"ConfigServer: onRequest");
-                response.send("Hello!!!");
-            }
-
-        });
-
-        // listen on port 5000
-        server.listen(5000);
-    }
-
-    private void getNetworkStatusVars() {
-        if (DEBUG) Log.d(TAG, "essid: " + NetUtils.getSSID(this));
-        if (DEBUG) Log.d(TAG, "ipaddress: " + NetUtils.getIPAddress(this));
-        if (DEBUG) Log.d(TAG, "MAC Address wlan0: " + NetUtils.getMACAddress("wlan0"));
-        if (DEBUG) Log.d(TAG, "MAC Address eth0: " + NetUtils.getMACAddress("eth0"));
-        if (DEBUG) Log.d(TAG, "ipaddress IPV4: " + NetUtils.getIPAddress(true));
-        if (DEBUG) Log.d(TAG, "ipaddress: IPV6 " + NetUtils.getIPAddress(false));
-    }
-
-    public boolean isCurrentConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        return isConnected;
-    }
-
-    public void buildDefaultHostpot() {
-
-        if (DEBUG) Log.d(TAG, "enable wireless hostpot with ssid: " + SSID_NAME);
-
-        if (wifiManager.isWifiEnabled()) {
-            wifiManager.setWifiEnabled(false);
-        }
-
-        WifiConfiguration netConfig = new WifiConfiguration();
-
-        netConfig.SSID = SSID_NAME;
-        netConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-        netConfig.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-        netConfig.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-        netConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-
-        try {
-            Method setWifiApMethod = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
-            boolean apstatus = (Boolean) setWifiApMethod.invoke(wifiManager, netConfig, true);
-
-            Method isWifiApEnabledmethod = wifiManager.getClass().getMethod("isWifiApEnabled");
-            while (!(Boolean) isWifiApEnabledmethod.invoke(wifiManager)) {
-            }
-            ;
-            Method getWifiApStateMethod = wifiManager.getClass().getMethod("getWifiApState");
-            int apstate = (Integer) getWifiApStateMethod.invoke(wifiManager);
-            Method getWifiApConfigurationMethod = wifiManager.getClass().getMethod("getWifiApConfiguration");
-            netConfig = (WifiConfiguration) getWifiApConfigurationMethod.invoke(wifiManager);
-            if (DEBUG)
-                Log.e("CLIENT", "\nSSID:" + netConfig.SSID + "\nPassword:" + netConfig.preSharedKey + "\n");
-
-        } catch (Exception e) {
-            if (DEBUG) Log.e(this.getClass().toString(), "", e);
-        }
-    }
 
 
     @Override

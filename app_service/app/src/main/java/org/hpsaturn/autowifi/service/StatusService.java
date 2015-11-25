@@ -37,9 +37,6 @@ public class StatusService extends Service {
         super.onCreate();
         if(DEBUG) Log.i(TAG, "[MainService] === onCreate ===");
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-
-
     }
 
     @Override

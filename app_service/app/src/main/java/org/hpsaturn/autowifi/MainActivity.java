@@ -38,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(onFabClickListener);
+
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

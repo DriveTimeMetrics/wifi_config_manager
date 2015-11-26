@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">AutoWifiManager</string>
     <string name="action_settings">Settings</string>
+    <string name="msg_server_running">Server: running</string>
+    <string name="msg_server_connecting">Server: connecting..</string>
+    <string name="msg_server_stop">Server: stop</string>
 </resources>

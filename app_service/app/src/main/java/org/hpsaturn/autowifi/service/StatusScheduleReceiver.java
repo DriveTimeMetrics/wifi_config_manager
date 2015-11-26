@@ -15,6 +15,7 @@ public class StatusScheduleReceiver extends BroadcastReceiver {
 	
 	public static final String TAG = StatusScheduleReceiver.class.getSimpleName();
 	private static final boolean DEBUG = Config.DEBUG;
+	public static final int REQ_SEVICE_CODE = 100;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -29,7 +30,7 @@ public class StatusScheduleReceiver extends BroadcastReceiver {
 		
 		AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(context, StartStatusServiceReceiver.class);
-		PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent pending = PendingIntent.getBroadcast(context, REQ_SEVICE_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
 		Calendar cal = Calendar.getInstance();
 		// Start x seconds after boot completed
 		cal.add(Calendar.SECOND, Config.TIME_AFTER_START);
@@ -49,7 +50,7 @@ public class StatusScheduleReceiver extends BroadcastReceiver {
 		
 		AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(context, StartStatusServiceReceiver.class);
-		PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent pending = PendingIntent.getBroadcast(context, REQ_SEVICE_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
 		service.cancel(pending);
 		
 		

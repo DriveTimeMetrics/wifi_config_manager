@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
 	}
 
     private void setStopServiceUI() {
-        mFabStartStopService.setImageResource(R.drawable.ic_play_grey600_36dp);
+        mFabStartStopService.setImageResource(R.drawable.ic_play_white_48dp);
         mTvServerStatus.setText(R.string.msg_server_stop);
         mTvServerData.setText("");
     }
 
     private void setStartServiceUI() {
-        mFabStartStopService.setImageResource(R.drawable.ic_stop_grey600_36dp);
+        mFabStartStopService.setImageResource(R.drawable.ic_stop_white_48dp);
         mTvServerStatus.setText(R.string.msg_server_running);
     }
 
